@@ -55,18 +55,18 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// Override
-// void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-// {
-//   switch (GPIO_Pin) {
-//     case KEY_Pin: {
-//       state = !state;
-//       break;
-//     }
-//
-//     default:{}
-//   }
-// }
+//Override
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  switch (GPIO_Pin) {
+    case KEY_Pin: {
+      state = !state;
+      break;
+    }
+
+    default:{}
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -77,7 +77,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  uint8_t state = 0;
   uint32_t prev = 0;
   /* USER CODE END 1 */
 
@@ -109,14 +108,14 @@ int main(void)
   while (1)
   {    
 		ticks = HAL_GetTick();
-    if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET)
-    {
-      HAL_Delay(10);
-      if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET) {
-        state = !state;
-      }
-      while (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET);
-    }
+    // if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET)
+    // {
+    //   HAL_Delay(10);
+    //   if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET) {
+    //     state = !state;
+    //   }
+    //   while (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET);
+    // }
 
     if (ticks - prev > 1000) {
       state ? HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin) : HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
