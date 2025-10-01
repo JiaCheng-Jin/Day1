@@ -9,6 +9,7 @@
 
 # MDK-ARM
 .MDK-ARM
+.mxproject
 DebugConfig
 *uvguix*
 
