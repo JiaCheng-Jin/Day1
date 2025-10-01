@@ -77,7 +77,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  uint8_t state = 0;
+  uint8_t state = 1;
   uint32_t prev = 0;
   /* USER CODE END 1 */
 
