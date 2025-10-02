@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "iwdg.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -57,18 +56,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-//Override
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-  switch (GPIO_Pin) {
-    case KEY_Pin: {
-      state = !state;
-      break;
-    }
 
-    default:{}
-  }
-}
 /* USER CODE END 0 */
 
 /**
@@ -102,8 +90,8 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM1_Init();
   MX_TIM12_Init();
-  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
   HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
@@ -112,13 +100,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    uint32_t arr_value = __HAL_TIM_GET_AUTORELOAD(&htim1) + 1;
-    uint32_t brightness = arr_value * sinf(4 * HAL_GetTick() / 1000.0f) - 1;
-    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, brightness);
-
-    if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET) {
-      HAL_IWDG_Refresh(&hiwdg);
-    }
+    // uint32_t arr_value = __HAL_TIM_GET_AUTORELOAD(&htim1) + 1;
+    // uint32_t brightness = arr_value * sinf(4 * HAL_GetTick() / 1000.0f) - 1;
+    // __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, brightness);
+    
   }
     /* USER CODE END WHILE */
 
@@ -143,9 +128,8 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 6;

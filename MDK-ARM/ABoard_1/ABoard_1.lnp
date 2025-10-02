@@ -6,6 +6,7 @@
 "aboard_1\tim.o"
 "aboard_1\stm32f4xx_it.o"
 "aboard_1\stm32f4xx_hal_msp.o"
+"aboard_1\callback.o"
 "aboard_1\stm32f4xx_hal_iwdg.o"
 "aboard_1\stm32f4xx_hal_rcc.o"
 "aboard_1\stm32f4xx_hal_rcc_ex.o"
