@@ -1,8 +1,12 @@
 --cpu=Cortex-M4.fp.sp
 "aboard_1\startup_stm32f427xx.o"
 "aboard_1\main.o"
+"aboard_1\gpio.o"
+"aboard_1\iwdg.o"
+"aboard_1\tim.o"
 "aboard_1\stm32f4xx_it.o"
 "aboard_1\stm32f4xx_hal_msp.o"
+"aboard_1\stm32f4xx_hal_iwdg.o"
 "aboard_1\stm32f4xx_hal_rcc.o"
 "aboard_1\stm32f4xx_hal_rcc_ex.o"
 "aboard_1\stm32f4xx_hal_flash.o"
@@ -16,6 +20,8 @@
 "aboard_1\stm32f4xx_hal_cortex.o"
 "aboard_1\stm32f4xx_hal.o"
 "aboard_1\stm32f4xx_hal_exti.o"
+"aboard_1\stm32f4xx_hal_tim.o"
+"aboard_1\stm32f4xx_hal_tim_ex.o"
 "aboard_1\system_stm32f4xx.o"
 --strict --scatter "ABoard_1\ABoard_1.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
