@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -49,7 +50,7 @@
 /* USER CODE BEGIN PV */
 uint32_t ticks = 0;
 volatile uint8_t state = 0;
-uint8_t RX_buffer[20];
+char RX_buffer[20], TX_buffer[20];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,8 +72,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  uint32_t prev = 0;
-  uint8_t msg[] = "RoboMaster\r\n";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -93,13 +92,14 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM1_Init();
   MX_TIM12_Init();
   MX_UART7_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-  HAL_UART_Receive_IT(&huart7, RX_buffer, 1);
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart7, RX_buffer, 20);
   HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
 
@@ -107,8 +107,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_UART_Transmit(&huart7, msg, 12, 1000);
-    HAL_Delay(1000);
+    
   }
     /* USER CODE END WHILE */
 

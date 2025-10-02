@@ -4,8 +4,10 @@
 #include <main.h>
 #include <tim.h>
 #include <usart.h>
-#include <cmath>
-extern uint8_t RX_buffer[20];
+#include <cstring>
+
+
+extern uint8_t RX_buffer[20], TX_buffer[20];
 
 // Override __weak
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -28,10 +30,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   }
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-  if (huart == &huart7) {
-    if (RX_buffer[0] == 'R')  HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_RESET);
-    else if (RX_buffer[0] == 'M') HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_SET);
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
+  if (huart == &huart7 && huart->RxEventType != HAL_UART_RXEVENT_HT) {
+    memcpy(TX_buffer, RX_buffer, Size);
+    HAL_UART_Transmit_DMA(huart, TX_buffer, Size);
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, RX_buffer, 20);
   }
-  HAL_UART_Receive_IT(huart, RX_buffer, 1);
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+  
 }
