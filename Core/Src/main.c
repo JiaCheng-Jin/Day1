@@ -49,6 +49,7 @@
 /* USER CODE BEGIN PV */
 uint32_t ticks = 0;
 volatile uint8_t state = 0;
+uint8_t RX_buffer[20];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,6 +99,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+  HAL_UART_Receive_IT(&huart7, RX_buffer, 1);
   HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
 
