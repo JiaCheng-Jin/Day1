@@ -280,7 +280,7 @@ int main(void)
   while (1)
   {
     for (uint8_t i = 0; i < 8; ++i) {
-      __HAL_TIM_SET_AUTORELOAD(&htim12, music_haruhikage_notes[i].tune);
+      __HAL_TIM_SET_AUTORELOAD(&htim12, 1e6 / music_haruhikage_notes[i].tune);
       __HAL_TIM_SetCompare(&htim12, TIM_CHANNEL_1, music_haruhikage_notes[i].tune >> 1);
       HAL_Delay((uint32_t)(music_haruhikage_notes[i].beat * 60000 / 97));
     }
