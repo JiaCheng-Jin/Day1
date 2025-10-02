@@ -19,10 +19,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+
 #include "math.h"
 /* USER CODE END Includes */
 
@@ -68,6 +71,7 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
   uint32_t prev = 0;
+  uint8_t msg[] = "RoboMaster\r\n";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -90,6 +94,7 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM1_Init();
   MX_TIM12_Init();
+  MX_UART7_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
@@ -100,10 +105,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // uint32_t arr_value = __HAL_TIM_GET_AUTORELOAD(&htim1) + 1;
-    // uint32_t brightness = arr_value * sinf(4 * HAL_GetTick() / 1000.0f) - 1;
-    // __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, brightness);
-    
+    HAL_UART_Transmit(&huart7, msg, 12, 1000);
+    HAL_Delay(1000);
   }
     /* USER CODE END WHILE */
 
