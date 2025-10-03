@@ -6,10 +6,11 @@
 #include <usart.h>
 #include <cstring>
 #include <can.h>
+#include <Motor.hpp>
 
-uint32_t can_tx_mailbox;
 extern uint8_t RX_buffer[20], TX_buffer[20];
 
+uint32_t can_tx_mailbox;
 uint8_t rx_data[8];
 uint8_t tx_data[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00};
 CAN_TxHeaderTypeDef tx_header = {
@@ -21,6 +22,9 @@ CAN_TxHeaderTypeDef tx_header = {
   .TransmitGlobalTime = DISABLE
 };
 CAN_RxHeaderTypeDef rx_header;
+
+M3508_Motor motor(19.2);
+
 
 // Override __weak
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -60,5 +64,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
   if (hcan == &hcan1) {
     HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &rx_header, rx_data);
+    if (rx_header.StdId == 0x203) {
+      motor.parse_CANMsg_callback(rx_data);
+    }
   }
 }
